@@ -1,6 +1,7 @@
 const std = @import("std");
 
 const Buffer = @import("Buffer.zig");
+const Terminal = @import("frontend/terminal.zig").Terminal;
 
 pub fn main(init: std.process.Init) !void {
     // Argument storage stays valid for the lifetime of the process arena.

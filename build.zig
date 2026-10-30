@@ -41,6 +41,14 @@ pub fn build(b: *std.Build) void {
         .target = target,
     });
 
+    //Adding a c dependency, the ncurses library
+    const ncurses = b.addTranslateC(. {
+        .root_source_file = b.path("src/frontend/ncurses.h"),
+        .optimize = optimize,
+        .target = target,
+        .link_libc = true,
+    });
+
     // Here we define an executable. An executable needs to have a root module
     // which needs to expose a `main` function. While we could add a main function
     // to the module defined above, it's sometimes preferable to split business
@@ -70,6 +78,7 @@ pub fn build(b: *std.Build) void {
             // definition if desireable (e.g. firmware for embedded devices).
             .target = target,
             .optimize = optimize,
+            .link_libc = true,
             // List of modules available for import in source files part of the
             // root module.
             .imports = &.{
@@ -79,10 +88,13 @@ pub fn build(b: *std.Build) void {
                 // can be extremely useful in case of collisions (which can happen
                 // importing modules from different packages).
                 .{ .name = "lightning", .module = mod },
+                .{ .name = "ncurses", .module = ncurses.createModule() }
             },
         }),
     });
 
+
+    exe.root_module.linkSystemLibrary("ncursesw", .{});
     // This declares intent for the executable to be installed into the
     // install prefix when running `zig build` (i.e. when executing the default
     // step). By default the install prefix is `zig-out/` but can be overridden
