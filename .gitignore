@@ -1,0 +1,11 @@
+# Zig build cache and installed build artifact
+/.zig-cache/
+/zig-out
+
+#Emacs temp and backup files
+*~
+\#*\#
+.\#*
+
+# Note documents I use for myself when iterating over development design ideas
+notes/
