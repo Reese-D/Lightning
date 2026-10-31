@@ -21,7 +21,6 @@ pub const Terminal = struct {
             return error.LocaleInitializationFailed;
         }
 
-        
         const screen = curses.newterm(null, curses.stdout, curses.stdin) orelse return error.TerminalInitializationFailed;
         errdefer {
             const status_code = curses.endwin();
@@ -37,9 +36,9 @@ pub const Terminal = struct {
         if (curses.raw() == curses.ERR or
             curses.noecho() == curses.ERR or
             curses.keypad(window, true) == curses.ERR)
-            {
-                return error.TerminalConfigurationFailed;
-            }
+        {
+            return error.TerminalConfigurationFailed;
+        }
 
         return .{ .screen = screen, .window = window };
     }
@@ -59,18 +58,18 @@ pub const Terminal = struct {
         var value: curses.wint_t = undefined;
         const status = curses.wget_wch(self.window, &value);
 
-        switch(status) {
+        switch (status) {
             curses.ERR => return error.TerminalInputFailed,
             curses.OK => return value,
             //TODO handle other keys that aren't text input (up, down, etc)
             curses.KEY_CODE_YES => return ' ',
             //wget_wch says only the above 3 should ever be returned
-            else => unreachable 
+            else => unreachable,
         }
     }
 
     pub fn draw(self: *Terminal) !void {
-        const message = "Lightning, you've been thunderstruck! - press q to quit when done";        //Move our cursor to the start
+        const message = "Lightning, you've been thunderstruck! - press q to quit when done"; //Move our cursor to the start
         if (curses.wmove(self.window, 0, 0) == curses.ERR) {
             return error.TerminalDrawFailed;
         }

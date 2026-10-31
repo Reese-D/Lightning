@@ -50,11 +50,11 @@ pub fn main(init: std.process.Init) !void {
     defer terminal.deinit();
 
     try terminal.draw();
-    
+
     //Event loop, need to check if we quit the application
-    while(true) {
+    while (true) {
         const value = try terminal.getKeyPress();
-        if(value == 'q') {
+        if (value == 'q') {
             break;
         }
     }
