@@ -10,7 +10,11 @@ pub fn main(init: std.process.Init) !void {
         std.log.err("Usage: lightning <filename>", .{});
         return;
     }
+    for (args[2..]) |arg| {
+        std.log.warn("Extra unused argument will be discarded: {s}", .{arg});
+    }
 
+    //Read the whole file the user passed in, unless it's >16mb
     const contents = std.Io.Dir.cwd().readFileAlloc(
         init.io,
         args[1],
@@ -34,7 +38,10 @@ pub fn main(init: std.process.Init) !void {
 
     std.log.info("Initial file: {s}", .{buffer.path});
 
-    for (args[2..]) |arg| {
-        std.log.warn("Extra unused argument will be discarded: {s}", .{arg});
-    }
+    //Setup our frontend, right now we only support terminal editing (no gui)
+    var terminal = try Terminal.init();
+    defer terminal.deinit();
+
+    
+    
 }
