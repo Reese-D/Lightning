@@ -40,5 +40,8 @@ I may ask it what functions are used to read from a file for example (I am not f
 ### Writing documentation
 I may also use it to create documentation, draw architecture diagrams, or do non-code but code-related tasks such as these that I don't like doing myself. AI was used to help create some of this README.
 
+### Unit tests
+AI may be used to quickly construct unit tests, including boundary cases and malformed input. Generated tests are reviewed against the intended behavior and run to check the implementation.
+
 ### Notes on AI usage changes
-If I extend AI usage in the future I will update this section, but for now it's primarily just a learning tool and not doing any real work.
+If I extend AI usage in the future I will update this section. For now it primarily supports learning, documentation, small mechanical changes, and unit test creation; implementation remains primarily handwritten.
