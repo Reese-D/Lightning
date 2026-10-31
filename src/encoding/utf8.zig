@@ -6,11 +6,21 @@ const std = @import("std");
 pub const Character = union(enum) {
     codepoint: u21,
     invalid_byte: u8,
+
+    pub fn isCodepoint(self: *const Character, char: u21) bool {
+        switch(self) {
+            .codepoint => |cp| {
+                return cp == char;
+            },
+            else => return false,
+        }
+    }
 };
 
 pub const Decoded = struct {
     character: Character,
     bytes_consumed: u8,
+
 };
 
 pub const DecodedIterator = struct {
@@ -19,6 +29,11 @@ pub const DecodedIterator = struct {
     pub fn next(self: *DecodedIterator) ?Decoded {
         const decoded = decodeNextCharacter(self.remaining) orelse return null;
         self.remaining = self.remaining[decoded.bytes_consumed..];
+        return decoded;
+    }
+    
+    pub fn peek(self: *DecodedIterator) ?Decoded {
+        const decoded = decodeNextCharacter(self.remaining) orelse return null;
         return decoded;
     }
 
