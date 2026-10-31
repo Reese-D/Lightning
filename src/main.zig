@@ -1,5 +1,11 @@
 const std = @import("std");
 
+// Include these suites in the executable's test target without running main.
+test {
+    _ = @import("Buffer.zig");
+    _ = @import("encoding/utf8.zig");
+}
+
 const Buffer = @import("Buffer.zig");
 const Terminal = @import("frontend/terminal.zig").Terminal;
 const curses = @import("frontend/ncurses_bindings.zig");

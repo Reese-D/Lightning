@@ -42,7 +42,7 @@ pub fn build(b: *std.Build) void {
     });
 
     //Adding a c dependency, the ncurses library
-    const ncurses = b.addTranslateC(. {
+    const ncurses = b.addTranslateC(.{
         .root_source_file = b.path("src/frontend/ncurses.h"),
         .optimize = optimize,
         .target = target,
@@ -88,11 +88,10 @@ pub fn build(b: *std.Build) void {
                 // can be extremely useful in case of collisions (which can happen
                 // importing modules from different packages).
                 .{ .name = "lightning", .module = mod },
-                .{ .name = "ncurses", .module = ncurses.createModule() }
+                .{ .name = "ncurses", .module = ncurses.createModule() },
             },
         }),
     });
-
 
     exe.root_module.linkSystemLibrary("ncursesw", .{});
     // This declares intent for the executable to be installed into the
