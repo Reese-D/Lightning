@@ -2,6 +2,7 @@ const std = @import("std");
 
 const Buffer = @import("Buffer.zig");
 const Terminal = @import("frontend/terminal.zig").Terminal;
+const curses = @import("frontend/ncurses_bindings.zig");
 
 pub fn main(init: std.process.Init) !void {
     // Argument storage stays valid for the lifetime of the process arena.
@@ -42,6 +43,13 @@ pub fn main(init: std.process.Init) !void {
     var terminal = try Terminal.init();
     defer terminal.deinit();
 
+    try terminal.draw();
     
-    
+    //Event loop, need to check if we quit the application
+    while(true) {
+        const value = try terminal.getKeyPress();
+        if(value == 'q') {
+            break;
+        }
+    }
 }

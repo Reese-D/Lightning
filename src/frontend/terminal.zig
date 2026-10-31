@@ -54,4 +54,34 @@ pub const Terminal = struct {
             std.log.warn("curses failed to restore terminal state", .{});
         }
     }
+
+    pub fn getKeyPress(self: *Terminal) !curses.wint_t {
+        var value: curses.wint_t = undefined;
+        const status = curses.wget_wch(self.window, &value);
+        if(status == curses.ERR) {
+            return error.TerminalInputFailed;
+        }
+        return value;
+    }
+
+    pub fn draw(self: *Terminal) !void {
+        const message = "Lightning, you've been thunderstruck! - press q to quit when done";        //Move our cursor to the start
+        if (curses.wmove(self.window, 0, 0) == curses.ERR) {
+            return error.TerminalDrawFailed;
+        }
+
+        //Write the string out
+        if (curses.waddnstr(
+            self.window,
+            message.ptr,
+            @intCast(message.len), //usize to c_int
+        ) == curses.ERR) {
+            return error.TerminalDrawFailed;
+        }
+
+        //refresh the window with the new text
+        if (curses.wrefresh(self.window) == curses.ERR) {
+            return error.TerminalRefreshFailed;
+        }
+    }
 };
