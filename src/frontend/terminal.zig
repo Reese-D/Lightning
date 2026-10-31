@@ -58,10 +58,15 @@ pub const Terminal = struct {
     pub fn getKeyPress(self: *Terminal) !curses.wint_t {
         var value: curses.wint_t = undefined;
         const status = curses.wget_wch(self.window, &value);
-        if(status == curses.ERR) {
-            return error.TerminalInputFailed;
+
+        switch(status) {
+            curses.ERR => return error.TerminalInputFailed,
+            curses.OK => return value,
+            //TODO handle other keys that aren't text input (up, down, etc)
+            curses.KEY_CODE_YES => return ' ',
+            //wget_wch says only the above 3 should ever be returned
+            else => unreachable 
         }
-        return value;
     }
 
     pub fn draw(self: *Terminal) !void {
